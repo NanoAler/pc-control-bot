@@ -19,40 +19,86 @@ Telegram bot for remote PC control on Linux (KDE Wayland).
 
 ## Requirements
 
+- Linux with KDE Plasma
 - Rust (stable)
 - Telegram Bot Token
-- Linux with KDE Plasma
-- Dependencies: `pactl`, `ffmpeg`, `qdbus`, `loginctl`, `spectacle`, `rfkill`
 
-## Setup
+## Installation
 
-1. Create a bot via [@BotFather](https://t.me/BotFather)
+### 1. Create Telegram Bot
 
-2. Configure environment:
+1. Open [@BotFather](https://t.me/BotFather) and create a new bot
+2. Copy the bot token
+
+### 2. Get Your User ID
+
+1. Open [@userinfobot](https://t.me/userinfobot)
+2. Copy your user ID (number)
+
+### 3. Install Dependencies
+
+**Arch Linux:**
+```bash
+sudo pacman -S rustup pulseaudio ffmpeg libqt5-core libqt5-gui spectacle rfkill
+rustup default stable
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install rustc cargo pulseaudio ffmpeg qtbase5-dev spectacle rfkill
+```
+
+### 4. Configure
+
 ```bash
 cp .env.example .env
 ```
 
 Edit `.env`:
 ```
-TELEOXIDE_TOKEN=your_bot_token
-ALLOWED_USER_IDS=your_telegram_user_id
+TELEOXIDE_TOKEN=your_bot_token_here
+ALLOWED_USER_IDS=your_user_id_here
 ```
 
-3. Build and run:
-```bash
-cargo build --release
-cargo run --release
-```
+### 5. Build Screenshot Tool
 
-## Build Screenshot Tool
-
-The screenshot tool requires Qt6:
 ```bash
 cd src/utils
 mkdir -p build && cd build
 cmake ..
 make
+sudo cp screenshot_tool /usr/local/bin/
+```
+
+### 6. Build and Run
+
+```bash
+cargo build --release
+cargo run --release
+```
+
+### 7. Run on Startup (Optional)
+
+```bash
+# Create systemd service
+sudo tee /etc/systemd/system/pc-control-bot.service > /dev/null <<EOF
+[Unit]
+Description=PC Control Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=$(pwd)
+ExecStart=$(pwd)/target/release/pc_control_bot
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable pc-control-bot
+sudo systemctl start pc-control-bot
 ```
 
 ## Commands
