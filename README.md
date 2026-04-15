@@ -29,7 +29,9 @@ Telegram бот для удалённого управления ПК на Linux
 2. Получите свой ID через [@userinfobot](https://t.me/userinfobot)
 3. Запустите скрипт установки:
 ```bash
-chmod +x install.sh && ./install.sh
+git clone https://github.com/NanoAler/pc-control-bot/blob/main/install.sh
+chmod +x install.sh
+./install.sh
 ```
 
 ## Ручная установка

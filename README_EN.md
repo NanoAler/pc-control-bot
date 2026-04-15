@@ -29,7 +29,9 @@ Telegram bot for remote PC control on Linux (KDE Wayland).
 2. Get your user ID from [@userinfobot](https://t.me/userinfobot)
 3. Run the setup script:
 ```bash
-chmod +x install.sh && ./install.sh
+git clone https://github.com/NanoAler/pc-control-bot/blob/main/install.sh
+chmod +x install.sh
+./install.sh
 ```
 
 ## Manual Installation
