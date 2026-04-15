@@ -43,25 +43,63 @@ if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         echo ""
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             echo "Skipping configuration."
+        else
             echo ""
-            echo "Done! Run: ./target/release/pc_control_bot"
-            exit 0
-        fi
-    fi
+            echo "Enter your Telegram bot token (from @BotFather):"
+            read -p "Token: " token
 
-    echo ""
-    echo "Enter your Telegram bot token (from @BotFather):"
-    read -p "Token: " token
+            echo ""
+            echo "Enter your user ID (from @userinfobot):"
+            read -p "User ID: " user_id
 
-    echo ""
-    echo "Enter your user ID (from @userinfobot):"
-    read -p "User ID: " user_id
-
-    cat > .env << EOF
+            cat > .env << EOF
 TELEOXIDE_TOKEN=$token
 ALLOWED_USER_IDS=$user_id
 EOF
-    echo ".env created!"
+            echo ".env created!"
+        fi
+    else
+        echo ""
+        echo "Enter your Telegram bot token (from @BotFather):"
+        read -p "Token: " token
+
+        echo ""
+        echo "Enter your user ID (from @userinfobot):"
+        read -p "User ID: " user_id
+
+        cat > .env << EOF
+TELEOXIDE_TOKEN=$token
+ALLOWED_USER_IDS=$user_id
+EOF
+        echo ".env created!"
+    fi
+fi
+
+# Auto-start
+echo ""
+read -p "Enable auto-start with systemd? [y/N]: " -n 1 -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    WORKDIR=$(pwd)
+    cat > /tmp/pc-control-bot.service << EOF
+[Unit]
+Description=PC Control Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=$USER
+WorkingDirectory=$WORKDIR
+ExecStart=$WORKDIR/target/release/pc_control_bot
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    sudo cp /tmp/pc-control-bot.service /etc/systemd/system/
+    sudo systemctl daemon-reload
+    sudo systemctl enable pc-control-bot
+    echo "Auto-start enabled!"
 fi
 
 echo ""
