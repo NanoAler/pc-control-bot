@@ -17,38 +17,18 @@ Telegram bot for remote PC control on Linux (KDE Wayland).
 - Remote command execution
 - System control (shutdown/reboot/sleep)
 
-## Requirements
+## Quick Setup
 
-- Linux with KDE Plasma
-- Rust (stable)
-- Telegram Bot Token
-
-## Quick Install
-
+1. Create a bot via [@BotFather](https://t.me/BotFather)
+2. Get your user ID from [@userinfobot](https://t.me/userinfobot)
+3. Run the setup script:
 ```bash
-chmod +x install.sh
-./install.sh
+chmod +x install.sh && ./install.sh
 ```
 
-The script will:
-1. Install all dependencies (Arch/Ubuntu)
-2. Build the screenshot tool
-3. Build the bot
-4. Ask if you want to configure the bot now
+## Manual Installation
 
-## Manual Setup
-
-### 1. Create Telegram Bot
-
-1. Open [@BotFather](https://t.me/BotFather) and create a new bot
-2. Copy the bot token
-
-### 2. Get Your User ID
-
-1. Open [@userinfobot](https://t.me/userinfobot)
-2. Copy your user ID (number)
-
-### 3. Install Dependencies
+### 1. Install Dependencies
 
 **Arch Linux:**
 ```bash
@@ -59,6 +39,23 @@ rustup default stable
 **Ubuntu/Debian:**
 ```bash
 sudo apt install rustc cargo pulseaudio ffmpeg qtbase5-dev spectacle rfkill
+```
+
+### 2. Build Screenshot Tool
+
+```bash
+cd src/utils
+mkdir -p build && cd build
+cmake ..
+make
+sudo cp screenshot_tool /usr/local/bin/
+cd ../../..
+```
+
+### 3. Build
+
+```bash
+cargo build --release
 ```
 
 ### 4. Configure
@@ -73,24 +70,13 @@ TELEOXIDE_TOKEN=your_bot_token_here
 ALLOWED_USER_IDS=your_user_id_here
 ```
 
-### 5. Build Screenshot Tool
+### 5. Run
 
 ```bash
-cd src/utils
-mkdir -p build && cd build
-cmake ..
-make
-sudo cp screenshot_tool /usr/local/bin/
+./target/release/pc_control_bot
 ```
 
-### 6. Build and Run
-
-```bash
-cargo build --release
-cargo run --release
-```
-
-### 7. Run on Startup (Optional)
+### 6. Auto-start (Optional)
 
 ```bash
 sudo tee /etc/systemd/system/pc-control-bot.service > /dev/null <<EOF
