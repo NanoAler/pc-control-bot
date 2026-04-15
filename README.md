@@ -1,34 +1,40 @@
 # PC Control Bot
 
-Telegram bot for remote PC control on Linux (KDE Wayland).
+Telegram бот для удалённого управления ПК на Linux (KDE Wayland).
 
-## Features
+## Возможности
 
-- Volume control (pulseaudio)
-- Brightness control (KDE qdbus)
-- Screen lock
-- Microphone toggle
-- Screenshot capture
-- Camera capture
-- Device listing
-- Bluetooth toggle
-- Process list
-- App launch
-- Remote command execution
-- System control (shutdown/reboot/sleep)
+- Управление громкостью (pulseaudio)
+- Управление яркостью (KDE qdbus)
+- Блокировка экрана
+- Переключение микрофона
+- Снимок экрана
+- Фото с камеры
+- Список устройств
+- Переключение Bluetooth
+- Список процессов
+- Запуск приложений
+- Выполнение команд
+- Системные команды (выключение/перезагрузка/сон)
 
-## Quick Setup
+## Требования
 
-1. Create a bot via [@BotFather](https://t.me/BotFather)
-2. Get your user ID from [@userinfobot](https://t.me/userinfobot)
-3. Run the setup script:
+- Linux с KDE Plasma
+- Rust (stable)
+- Токен Telegram бота
+
+## Быстрая установка
+
+1. Создайте бота через [@BotFather](https://t.me/BotFather)
+2. Получите свой ID через [@userinfobot](https://t.me/userinfobot)
+3. Запустите скрипт установки:
 ```bash
 chmod +x install.sh && ./install.sh
 ```
 
-## Manual Installation
+## Ручная установка
 
-### 1. Install Dependencies
+### 1. Установка зависимостей
 
 **Arch Linux:**
 ```bash
@@ -41,7 +47,7 @@ rustup default stable
 sudo apt install rustc cargo pulseaudio ffmpeg qtbase5-dev spectacle rfkill
 ```
 
-### 2. Build Screenshot Tool
+### 2. Сборка инструмента для скриншотов
 
 ```bash
 cd src/utils
@@ -52,31 +58,31 @@ sudo cp screenshot_tool /usr/local/bin/
 cd ../../..
 ```
 
-### 3. Build
+### 3. Сборка
 
 ```bash
 cargo build --release
 ```
 
-### 4. Configure
+### 4. Настройка
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env`:
+Отредактируйте `.env`:
 ```
-TELEOXIDE_TOKEN=your_bot_token_here
-ALLOWED_USER_IDS=your_user_id_here
+TELEOXIDE_TOKEN=ваш_токен_бота
+ALLOWED_USER_IDS=ваш_user_id
 ```
 
-### 5. Run
+### 5. Запуск
 
 ```bash
 ./target/release/pc_control_bot
 ```
 
-### 6. Auto-start (Optional)
+### 6. Автозапуск (опционально)
 
 ```bash
 sudo tee /etc/systemd/system/pc-control-bot.service > /dev/null <<EOF
@@ -99,28 +105,28 @@ sudo systemctl enable pc-control-bot
 sudo systemctl start pc-control-bot
 ```
 
-## Commands
+## Команды
 
-| Command | Description |
-|---------|-------------|
-| `/help` | Show help |
-| `/menu` | Show interactive menu |
-| `/volume <0-100>` | Set volume |
-| `/getvolume` | Get current volume |
-| `/brightness <0-100>` | Set brightness |
-| `/lock` | Lock screen |
-| `/mic` | Toggle microphone |
-| `/screenshot` | Take screenshot |
-| `/camera` | Take photo |
-| `/devices` | List devices |
-| `/bluetooth` | Toggle bluetooth |
-| `/shutdown` | Shutdown PC |
-| `/reboot` | Reboot PC |
-| `/sleep` | Sleep mode |
-| `/processes` | List processes |
-| `/launch <app>` | Launch application |
-| `/cmd <command>` | Execute shell command |
+| Команда | Описание |
+|---------|----------|
+| `/help` | Показать помощь |
+| `/menu` | Показать меню с кнопками |
+| `/volume <0-100>` | Установить громкость |
+| `/getvolume` | Получить текущую громкость |
+| `/brightness <0-100>` | Установить яркость |
+| `/lock` | Заблокировать экран |
+| `/mic` | Переключить микрофон |
+| `/screenshot` | Сделать скриншот |
+| `/camera` | Сделать фото с камеры |
+| `/devices` | Список устройств |
+| `/bluetooth` | Переключить Bluetooth |
+| `/shutdown` | Выключить ПК |
+| `/reboot` | Перезагрузить ПК |
+| `/sleep` | Спящий режим |
+| `/processes` | Список процессов |
+| `/launch <приложение>` | Запустить приложение |
+| `/cmd <команда>` | Выполнить команду |
 
-## License
+## Лицензия
 
 MIT

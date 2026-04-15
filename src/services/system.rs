@@ -1,4 +1,5 @@
 use std::process::Command;
+use crate::i18n::{Lang, T};
 
 pub async fn lock_screen() {
     let _ = Command::new("loginctl")
@@ -9,7 +10,7 @@ pub async fn lock_screen() {
         .output();
 }
 
-pub async fn exec_command(cmd: &str) -> String {
+pub async fn exec_command(cmd: &str, lang: Lang) -> String {
     match Command::new("sh")
         .args(["-c", cmd])
         .output()
@@ -18,7 +19,7 @@ pub async fn exec_command(cmd: &str) -> String {
             let stdout = String::from_utf8_lossy(&output.stdout);
             let stderr = String::from_utf8_lossy(&output.stderr);
             if stdout.is_empty() && stderr.is_empty() {
-                "Done (no output)".to_string()
+                T::get("done_no_output", lang).to_string()
             } else if stdout.is_empty() {
                 stderr.to_string()
             } else {
