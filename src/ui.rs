@@ -2,10 +2,14 @@ use teloxide::types::{InlineKeyboardButton, InlineKeyboardMarkup};
 
 pub fn main_menu() -> InlineKeyboardMarkup {
     let buttons = vec![
-        vec![
-            InlineKeyboardButton::callback("🔊 Громкость", "menu:volume"),
-            InlineKeyboardButton::callback("☀️ Яркость", "menu:brightness"),
-        ],
+        vec![InlineKeyboardButton::callback(
+            "📋 Устройства",
+            "menu:devices",
+        )],
+        vec![InlineKeyboardButton::callback(
+            "🔵 Bluetooth",
+            "menu:bluetooth",
+        )],
         vec![
             InlineKeyboardButton::callback("🔒 Экран", "menu:lock"),
             InlineKeyboardButton::callback("🎤 Микрофон", "menu:microphone"),
