@@ -229,26 +229,22 @@ pub async fn handle_callback(bot: Bot, query: teloxide::types::CallbackQuery, au
             bot.answer_callback_query(&query.id).text("Microphone toggled").await?;
         }
         "menu:screenshot" => {
-            bot.answer_callback_query(&query.id).text("Taking screenshot...").await?;
+            bot.answer_callback_query(&query.id).text("📸 Screenshot taken").await?;
             crate::services::display::screenshot().await;
             if let Some(msg) = &query.message {
                 let chat_id = msg.chat().id;
                 if let Some(path) = find_screenshot() {
-                    bot.send_photo(chat_id, InputFile::file(&path))
-                        .reply_markup(ui::back_to_menu())
-                        .await?;
+                    bot.send_photo(chat_id, InputFile::file(&path)).await?;
                     let _ = std::fs::remove_file(&path);
                 }
             }
         }
         "menu:camera" => {
-            bot.answer_callback_query(&query.id).text("Taking photo...").await?;
+            bot.answer_callback_query(&query.id).text("📷 Photo taken").await?;
             if let Some(msg) = &query.message {
                 let chat_id = msg.chat().id;
                 if let Some(path) = crate::services::camera::capture().await {
-                    bot.send_photo(chat_id, InputFile::file(&path))
-                        .reply_markup(ui::back_to_menu())
-                        .await?;
+                    bot.send_photo(chat_id, InputFile::file(&path)).await?;
                     let _ = std::fs::remove_file(&path);
                 }
             }
