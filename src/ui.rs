@@ -18,10 +18,10 @@ pub fn main_menu() -> InlineKeyboardMarkup {
             InlineKeyboardButton::callback("📋 Устройства", "menu:devices"),
             InlineKeyboardButton::callback("📊 Процессы", "menu:processes"),
         ],
-        vec![
-            InlineKeyboardButton::callback("🔵 Bluetooth", "menu:bluetooth"),
-            InlineKeyboardButton::callback("🎯 Команда", "menu:cmd"),
-        ],
+        vec![InlineKeyboardButton::callback(
+            "🔵 Bluetooth",
+            "menu:bluetooth",
+        )],
         vec![
             InlineKeyboardButton::callback("🛑 Выключение", "menu:shutdown"),
             InlineKeyboardButton::callback("🔄 Перезагрузка", "menu:reboot"),

@@ -253,6 +253,42 @@ pub async fn handle_callback(bot: Bot, query: teloxide::types::CallbackQuery, au
             crate::services::bluetooth::toggle().await;
             bot.answer_callback_query(&query.id).text("Bluetooth toggled").await?;
         }
+        "menu:devices" => {
+            bot.answer_callback_query(&query.id).await?;
+            if let Some(msg) = &query.message {
+                match crate::services::devices::list().await {
+                    Ok(devices) => {
+                        bot.send_message(msg.chat().id, format!("Devices:\n```\n{}```", escape_for_code(&devices)))
+                            .parse_mode(ParseMode::MarkdownV2)
+                            .reply_markup(ui::back_to_menu())
+                            .await?;
+                    }
+                    Err(e) => {
+                        bot.send_message(msg.chat().id, format!("Error: {}", e))
+                            .reply_markup(ui::back_to_menu())
+                            .await?;
+                    }
+                }
+            }
+        }
+        "menu:processes" => {
+            bot.answer_callback_query(&query.id).await?;
+            if let Some(msg) = &query.message {
+                match crate::services::system::list_processes().await {
+                    Ok(procs) => {
+                        bot.send_message(msg.chat().id, format!("Processes:\n```\n{}```", escape_for_code(&procs)))
+                            .parse_mode(ParseMode::MarkdownV2)
+                            .reply_markup(ui::back_to_menu())
+                            .await?;
+                    }
+                    Err(e) => {
+                        bot.send_message(msg.chat().id, format!("Error: {}", e))
+                            .reply_markup(ui::back_to_menu())
+                            .await?;
+                    }
+                }
+            }
+        }
         "menu:shutdown" => {
             if let Some(msg) = &query.message {
                 bot.edit_message_text(msg.chat().id, msg.id(), "Are you sure you want to shutdown?")
