@@ -17,6 +17,9 @@ pub async fn handle(bot: Bot, msg: Message, cmd: Command, auth: Auth, lang_stora
     let lang = lang_storage.get(user_id).await;
 
     match cmd {
+        Command::Start => {
+            show_language_select(&bot, &msg).await?;
+        }
         Command::Help => {
             let text = Command::descriptions().to_string();
             bot.send_message(msg.chat.id, text).parse_mode(ParseMode::Html).await?;
@@ -190,6 +193,13 @@ fn find_screenshot() -> Option<String> {
 async fn show_menu(bot: &Bot, msg: &Message, lang: Lang) -> HandlerResult {
     bot.send_message(msg.chat.id, T::get("welcome", lang))
         .reply_markup(ui::main_menu(lang))
+        .await?;
+    Ok(())
+}
+
+async fn show_language_select(bot: &Bot, msg: &Message) -> HandlerResult {
+    bot.send_message(msg.chat.id, T::get("select_language", Lang::En))
+        .reply_markup(ui::language_select())
         .await?;
     Ok(())
 }

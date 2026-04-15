@@ -10,29 +10,80 @@ pub fn language_select() -> InlineKeyboardMarkup {
 }
 
 pub fn main_menu(lang: Lang) -> InlineKeyboardMarkup {
+    let (
+        volume,
+        brightness,
+        lock,
+        mic,
+        screenshot,
+        camera,
+        devices,
+        bluetooth,
+        shutdown,
+        reboot,
+        sleep,
+        lang_text,
+    ) = if lang == Lang::Ru {
+        (
+            "Громкость",
+            "Яркость",
+            "Экран",
+            "Микрофон",
+            "Скриншот",
+            "Камера",
+            "Устройства",
+            "Bluetooth",
+            "Выключение",
+            "Перезагрузка",
+            "Сон",
+            "Язык",
+        )
+    } else {
+        (
+            "Volume",
+            "Brightness",
+            "Screen",
+            "Microphone",
+            "Screenshot",
+            "Camera",
+            "Devices",
+            "Bluetooth",
+            "Shutdown",
+            "Reboot",
+            "Sleep",
+            "Language",
+        )
+    };
+
     let buttons = vec![
         vec![
-            InlineKeyboardButton::callback("🔊", "menu:volume"),
-            InlineKeyboardButton::callback("☀️", "menu:brightness"),
+            InlineKeyboardButton::callback(&format!("🔊 {}", volume), "menu:volume"),
+            InlineKeyboardButton::callback(&format!("☀️ {}", brightness), "menu:brightness"),
         ],
         vec![
-            InlineKeyboardButton::callback("🔒", "menu:lock"),
-            InlineKeyboardButton::callback("🎤", "menu:microphone"),
+            InlineKeyboardButton::callback(&format!("🔒 {}", lock), "menu:lock"),
+            InlineKeyboardButton::callback(&format!("🎤 {}", mic), "menu:microphone"),
         ],
         vec![
-            InlineKeyboardButton::callback("📸", "menu:screenshot"),
-            InlineKeyboardButton::callback("📷", "menu:camera"),
+            InlineKeyboardButton::callback(&format!("📸 {}", screenshot), "menu:screenshot"),
+            InlineKeyboardButton::callback(&format!("📷 {}", camera), "menu:camera"),
         ],
         vec![
-            InlineKeyboardButton::callback("📋", "menu:devices"),
-            InlineKeyboardButton::callback("🔵", "menu:bluetooth"),
+            InlineKeyboardButton::callback(&format!("📋 {}", devices), "menu:devices"),
+            InlineKeyboardButton::callback(&format!("🔵 {}", bluetooth), "menu:bluetooth"),
         ],
         vec![
-            InlineKeyboardButton::callback("🛑", "menu:shutdown"),
-            InlineKeyboardButton::callback("🔄", "menu:reboot"),
+            InlineKeyboardButton::callback(&format!("🛑 {}", shutdown), "menu:shutdown"),
+            InlineKeyboardButton::callback(&format!("🔄 {}", reboot), "menu:reboot"),
         ],
-        vec![InlineKeyboardButton::callback("💤", "menu:sleep")],
-        vec![InlineKeyboardButton::callback("🌐", "menu:lang")],
+        vec![InlineKeyboardButton::callback(
+            &format!("💤 {}", sleep),
+            "menu:sleep",
+        )],
+        vec![InlineKeyboardButton::callback(
+            &format!("🌐 {}", lang_text),
+            "menu:lang",
+        )],
     ];
     InlineKeyboardMarkup::new(buttons)
 }
