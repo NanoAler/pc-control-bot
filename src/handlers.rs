@@ -306,6 +306,11 @@ pub async fn handle_callback(bot: Bot, query: teloxide::types::CallbackQuery, au
         }
         "confirm:cancel" => {
             bot.answer_callback_query(&query.id).text("Cancelled").await?;
+            if let Some(msg) = &query.message {
+                bot.edit_message_text(msg.chat().id, msg.id(), "PC Control Panel")
+                    .reply_markup(ui::main_menu())
+                    .await?;
+            }
         }
         s if s.starts_with("vol:") => {
             let delta = &s[4..];
